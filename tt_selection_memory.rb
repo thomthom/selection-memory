@@ -30,7 +30,7 @@ module TT::Plugins::SelectionMemory
   # Plugin information
   PLUGIN_ID       = 'TT_SelectionMemory'.freeze
   PLUGIN_NAME     = 'Selection Memory'.freeze
-  PLUGIN_VERSION  = '1.0.0'.freeze
+  PLUGIN_VERSION  = '1.0.1'.freeze
   
   # Modify this constant to adjust the selection size to suit your needs.
   SELECTION_STACK_SIZE = 5
@@ -88,6 +88,13 @@ module TT::Plugins::SelectionMemory
     end
   end
   
+  # @since 1.0.0
+  def self.clear_selection( selection )
+    unless @restoring
+      @index = SELECTION_STACK_SIZE - 1
+    end
+  end
+  
   
   # @since 1.0.0
   def self.reset
@@ -103,6 +110,10 @@ module TT::Plugins::SelectionMemory
     # @since 1.0.0
     def onSelectionBulkChange( selection )
       TT::Plugins::SelectionMemory.cache_selection( selection )
+    end
+    
+    def onSelectionCleared( selection )
+      TT::Plugins::SelectionMemory.clear_selection( selection )
     end
     
   end
